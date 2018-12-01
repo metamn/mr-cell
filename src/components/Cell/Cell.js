@@ -5,7 +5,8 @@ import styled from 'styled-components';
 /**
  * The cell container
  */
-const Container = styled.div``;
+const Container = styled.div`
+`;
 
 /**
  * A loading container

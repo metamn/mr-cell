@@ -26,9 +26,19 @@ const Container = styled.div`
 	height: ${props => props.height ? props.height : 'auto'};
 	display: flex;
 	flex-wrap: wrap;
-	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
 `;
 
+/**
+ * The Row container
+ */
+const Row = styled.div`
+	width: 100%;
+	height: calc(${props => props.height} / ${props => props.rows});
+	display: flex;
+	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
+	flex-wrap: wrap;
+	justify-content: space-between;
+`;
 
 /**
  * The main class
@@ -62,6 +72,25 @@ export default class CellList extends React.Component {
 		if (height && !width) {
 			ret.y = numberOfElements;
 			ret.isVertical = true;
+		}
+
+		if (height && width) {
+			const w = width.replace(/[^0-9.]/g, '');
+			const h = height.replace(/[^0-9.]/g, '');
+
+			if (w > h) {
+				ret.x = Math.round(numberOfElements / h);
+				ret.y = h;
+			}
+
+			if (w < h) {
+				ret.x = w;
+				ret.y = Math.round(numberOfElements / w);
+			}
+
+			if (w == h) {
+				ret.x = ret.y = Math.round(Math.sqrt(numberOfElements));
+			}
 		}
 
 		return ret;
@@ -103,6 +132,7 @@ export default class CellList extends React.Component {
 		const width = this.props.width;
 		const height = this.props.height;
 
+		console.log(`x,y: ${cellsMatrix.x}, ${cellsMatrix.y}`);
 
 		if (empty) {
 			return (
@@ -124,9 +154,17 @@ export default class CellList extends React.Component {
 				>
 				<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
 					{(i) =>
-						<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
-							{(j) => this.renderCell(i, j)}
-						</Repeat>
+						<Row
+							height={height}
+							rows={cellsMatrix.y}
+							isVertical={cellsMatrix.isVertical}
+							className="row row-${i}"
+							key={i}
+							>
+							<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
+								{(j) => this.renderCell(i, j)}
+							</Repeat>
+						</Row>
 					}
 				</Repeat>
 			</Container>
