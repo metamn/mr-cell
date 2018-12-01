@@ -7,4 +7,5 @@ import CellList from './CellList';
 storiesOf('CellList', module)
   .add('empty', () => <CellList width={'10vw'} />)
   .add('loading', () => <CellList width={'10vw'} numberOfElements={5} loading={true} />)
-  .add('horizontal', () => <CellList width={'10vw'} numberOfElements={5} />)
+  .add('horizontal', () => <CellList width={'90vw'} numberOfElements={5} />)
+  .add('vertical', () => <CellList height={'90vh'} numberOfElements={15} />)
