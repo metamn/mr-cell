@@ -7,6 +7,11 @@ import styled from 'styled-components';
  */
 const Empty = styled.div``;
 
+/**
+ * A loading container
+ */
+const Loading = styled.div``;
+
 
 /**
  * The main class
@@ -26,10 +31,12 @@ export default class CellList extends React.Component {
 	}
 
 	isEmpty() {
+		const numberOfElements = this.props.numberOfElements
 		const width = this.props.width;
 		const height = this.props.height;
 
-		return (!width && !height);
+		if (!numberOfElements) return true;
+		if (!width && !height) return true;
 	}
 
 	render() {
@@ -44,7 +51,7 @@ export default class CellList extends React.Component {
 
 		if (loading) {
 			return (
-				<Empty className='empty'>The list is loading ...</Empty>
+				<Loading className='loading'>The list is loading ...</Loading>
 			)
 		}
 
