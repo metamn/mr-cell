@@ -25,6 +25,7 @@ const Loading = styled.div``;
 const Container = styled.div`
 	width: ${props => props.width ? props.width : 'auto'};
 	height: ${props => props.height ? props.height : 'auto'};
+	overflow: hidden;
 	display: flex;
 	flex-wrap: ${props => props.isHorizontal ? 'nowrap' : 'wrap'};
 	flex-direction: ${props => props.isVertical ? 'column' : 'row'};

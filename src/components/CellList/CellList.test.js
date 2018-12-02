@@ -6,7 +6,12 @@ import 'jest-styled-components'
 
 import CellList from './CellList';
 
-describe('CellList', function() {
+describe('CellList container', function() {
+	it('should not overflow', () => {
+		const wrapper = renderer.create(<CellList height={'300px'} numberOfElements={5} />).toJSON();
+		expect(wrapper).toHaveStyleRule('overflow', 'hidden');
+	});
+
 	it('should support mixed units like `%` for width, `px` for height', () => {
 		const wrapper = renderer.create(<CellList width={'30%'} height={'300px'} numberOfElements={5} />).toJSON();
 		expect(wrapper).toHaveStyleRule('height', '300px');

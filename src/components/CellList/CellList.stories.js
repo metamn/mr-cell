@@ -13,5 +13,11 @@ storiesOf('CellList', module)
   .add('single line - horizontal 2', () => <CellList width={'90vw'} height={'20vh'} numberOfElements={5} />)
   .add('single line - vertical 2', () => <CellList width={'29vw'} height={'80vh'} numberOfElements={12} />)
   .add('square', () => <CellList width={'30vw'} height={'30vh'} numberOfElements={15} />)
-  .add('rectangle - horizontal', () => <CellList width={'400px'} height={'33vh'} numberOfElements={91} />)
+  .add(
+	  'rectangle - horizontal',
+	  () => <CellList width={'400px'} height={'33vh'} numberOfElements={91} />,
+	  {
+		  notes: 'To Fix: with `px` things got truncated',
+	  }
+  	)
   .add('rectangle - vertical', () => <CellList width={'30%'} height={'80%'} numberOfElements={121} />)

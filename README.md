@@ -1,3 +1,23 @@
 # mr-cell
 
-A cell component in React
+A cell component in React.
+It is the second lesson after React TicTacToe.
+
+## Technologies
+
+### Styled components
+
+### Storybook
+
+It is basically the de-facto development environment.
+
+- All component features are documented here as a story.
+- If a new feature is added a new story is created.
+- After all stories are OK we can say the component works.
+
+Uses the following addons:
+
+- Console: to show warnings, the prints to `console.log`
+- Notes: to add dev notes like why this feature is not working, how to fix it, etc.
+
+### Jest
