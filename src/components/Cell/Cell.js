@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 /**
@@ -17,7 +18,7 @@ const Loading = styled.div``;
 /**
  * The main class
  */
-export default class Cell extends React.Component {
+class Cell extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -47,3 +48,16 @@ export default class Cell extends React.Component {
 		)
 	}
 }
+
+/**
+ * The prop types
+ */
+
+Cell.propTypes = {
+	content: PropTypes.string,
+};
+
+/**
+ * Export the complete class
+ */
+export default Cell;
