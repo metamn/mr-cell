@@ -60,6 +60,8 @@ export default class CellList extends React.Component {
 		const height = this.props.height;
 		const numberOfElements = this.props.numberOfElements;
 
+		console.log(`w,h,e: ${width}, ${height}, ${numberOfElements}`);
+
 		let ret = {
 			x: 1,
 			y: 1,
@@ -67,60 +69,53 @@ export default class CellList extends React.Component {
 			isHorizontal: false,
 		};
 
+		// Single line, horizontal
 		if (width && !height) {
 			ret.x = numberOfElements;
+			ret.isHorizontal = true;
 		}
 
+		// Single line, vertical
 		if (height && !width) {
 			ret.y = numberOfElements;
+			ret.isVertical = true;
 		}
 
 		if (height && width) {
 			const w = width.replace(/[^0-9.]/g, '');
 			const h = height.replace(/[^0-9.]/g, '');
 
-			console.log(`w,h: ${w}, ${h}`);
-
-			if (w > h) {
-				let round = Math.round(numberOfElements / h);
-
-				if (round) {
-					ret.x = round;
-					ret.y = h;
-				} else {
-					ret.x = numberOfElements;
-					ret.y = 1;
-				}
-
-			}
-
-			if (w < h) {
-				let round = Math.round(numberOfElements / w);
-
-				if (round) {
-					ret.x = w;
-					ret.y = round;
-				} else {
-					ret.x = 1;
-					ret.y = numberOfElements;
-				}
-			}
-
+			// Square
 			if (w == h) {
 				ret.x = ret.y = Math.round(Math.sqrt(numberOfElements));
+			} else {
+				const max = Math.max(w, h);
+
+				// Single line
+				if (max >= numberOfElements) {
+					ret.x = (max == w) ? numberOfElements : 1;
+					ret.y = (max == h) ? numberOfElements : 1;
+					ret.isHorizontal = (max == w);
+					ret.isVertical = (max == h);
+				} else {
+					// Rectangle
+					const min = Math.min(w, h);
+					const larger = Math.round(numberOfElements / min * 10);
+					const smaller = Math.round(min / 10);
+
+					ret.x = (w > h) ? larger : smaller;
+					ret.y = (w > h) ? smaller : larger;
+				}
 			}
 		}
-
-		if (ret.x == 1) ret.isVertical = true;
-		if (ret.y == 1) ret.isHorizontal = true;
 
 		return ret;
 	}
 
-	renderCell(i, j) {
+	renderCell(i, j, axisWidth) {
 		const cellsMatrix = this.state.cellsMatrix;
 
-		const key = (i-1)*cellsMatrix.y + j;
+		const key = (i-1)*axisWidth + j;
 		let className = `cell cell-${key} cell-column-${i} cell-row-${j}`;
 
 		return (
@@ -149,7 +144,7 @@ export default class CellList extends React.Component {
 				<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
 					{(i) =>
 						<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
-							{(j) => this.renderCell(i, j)}
+							{(j) => this.renderCell(i, j, cellsMatrix.y)}
 						</Repeat>
 					}
 				</Repeat>
@@ -201,16 +196,16 @@ export default class CellList extends React.Component {
 				width={width}
 				height={height}
 				>
-				<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
+				<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
 					{(i) =>
 						<Row
 							height={height}
-							rows={cellsMatrix.y}
+							rows={cellsMatrix.x}
 							className='row'
 							key={i}
 							>
-							<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
-								{(j) => this.renderCell(i, j)}
+							<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
+								{(j) => this.renderCell(i, j, cellsMatrix.x)}
 							</Repeat>
 						</Row>
 					}
