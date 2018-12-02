@@ -19,5 +19,6 @@ Uses the following addons:
 
 - Console: to show warnings, the prints to `console.log`
 - Notes: to add dev notes like why this feature is not working, how to fix it, etc.
+- Knobs: it would be a tremendous help to stress test the component; unfortunately currently is not fully working. 
 
 ### Jest
