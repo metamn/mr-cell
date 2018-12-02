@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Cell from './../Cell';
@@ -41,10 +42,11 @@ const Row = styled.div`
 	justify-content: space-between;
 `;
 
+
 /**
  * The main class
  */
-export default class CellList extends React.Component {
+class CellList extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -220,3 +222,18 @@ export default class CellList extends React.Component {
 		)
 	}
 }
+
+/**
+ * The prop types
+ */
+
+CellList.propTypes = {
+	width: PropTypes.string,
+	height: PropTypes.string,
+	numberOfElements: PropTypes.number,
+};
+
+/**
+ * Export the complete class
+ */
+export default CellList;
