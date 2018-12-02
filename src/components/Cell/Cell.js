@@ -18,23 +18,8 @@ const Loading = styled.div``;
  * The main class
  */
 class Cell extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			loading: this.isLoading(),
-			content: this.props.content,
-		};
-	}
-
-	isLoading() {
-		return this.props.loading;
-	}
-
 	render() {
-		const loading = this.state.loading;
-		const content = this.state.content;
-		const className = this.props.className;
+		const {loading, content, className} = this.props;
 
 		if (loading) {
 			return (
@@ -53,7 +38,9 @@ class Cell extends React.Component {
  */
 
 Cell.propTypes = {
+	loading: PropTypes.boolean,
 	content: PropTypes.string,
+	className: PropTypes.string,
 };
 
 /**

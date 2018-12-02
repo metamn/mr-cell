@@ -26,7 +26,6 @@ const Container = styled.div`
 	height: ${props => props.height ? props.height : 'auto'};
 	overflow: hidden;
 	display: flex;
-	flex-direction: row;
 	flex-wrap: wrap;
 	background-color: lightblue;
 
@@ -48,9 +47,12 @@ const Row = styled.div`
 	width: 100%;
 	height: calc(${props => props.height} / ${props => props.rows});
 	display: flex;
-	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
 	flex-wrap: wrap;
 	justify-content: space-between;
+
+	${props => props.isVertical && css`
+		flex-direction: column;
+	`};
 `;
 
 
@@ -62,15 +64,24 @@ class CellList extends React.Component {
 		super(props);
 
 		this.state = {
-			loading: this.isLoading(),
+			/**
+			 * It's a set of calculated data based on props.
+			 * It's not a state per se, it's not interactive.
+			 *
+			 * Transforms `width`, `height` props as CSS units into a matrix of cols and rows.
+			 * Example: (80vw, 20vh, 120 elements) => (60, 60)
+			 *
+			 * We could do this transform in another component perhaps to stick to React best practices.
+			 * Perhaps a refactoring will be needed.
+			 *
+			 * @type {object}
+			 */
 			cellsMatrix: this.calculateCellsMatrix(),
 		};
 	}
 
 	calculateCellsMatrix() {
-		const width = this.props.width;
-		const height = this.props.height;
-		const numberOfElements = this.props.numberOfElements;
+		const {width, height, numberOfElements} = this.props;
 
 		console.log(`w,h,e: ${width}, ${height}, ${numberOfElements}`);
 
@@ -121,15 +132,15 @@ class CellList extends React.Component {
 			}
 		}
 
-		if (ret.x === 1) ret.isVertical = true;
-		if (ret.y === 1) ret.isHorizontal = true;
+		ret.isVertical = (ret.x === 1);
+		ret.isHorizontal = (ret.y === 1);
 
 		return ret;
 	}
 
 	renderCell(i, j) {
-		const numberOfElements = this.props.numberOfElements;
-		const cellsMatrix = this.state.cellsMatrix;
+		const {numberOfElements} = this.props;
+		const {cellsMatrix} = this.state;
 
 		const key = (i-1)*cellsMatrix.y + j;
 		if (key > numberOfElements) return;
@@ -148,9 +159,8 @@ class CellList extends React.Component {
 	}
 
 	renderSingleLineList() {
-		const width = this.props.width;
-		const height = this.props.height;
-		const cellsMatrix = this.state.cellsMatrix;
+		const {width, height} = this.props;
+		const {cellsMatrix} = this.state;
 
 		return (
 			<Container
@@ -172,22 +182,21 @@ class CellList extends React.Component {
 	}
 
 	isLoading() {
-		return this.props.loading;
+		const {loading} = this.props;
+
+		return loading;
 	}
 
 	isEmpty() {
-		const numberOfElements = this.props.numberOfElements
-		const width = this.props.width;
-		const height = this.props.height;
+		const {width, height, numberOfElements} = this.props;
 
 		if (!numberOfElements) return true;
 		if (!width && !height) return true;
 	}
 
 	render() {
-		const width = this.props.width;
-		const height = this.props.height;
-		const cellsMatrix = this.state.cellsMatrix;
+		const {width, height} = this.props;
+		const {cellsMatrix} = this.state;
 
 		const empty = this.isEmpty();
 		const loading = this.isLoading();
@@ -207,7 +216,7 @@ class CellList extends React.Component {
 		}
 
 		if (cellsMatrix.isVertical || cellsMatrix.isHorizontal) {
-			return this.renderSingleLineList(cellsMatrix);
+			return this.renderSingleLineList();
 		}
 
 		return (
@@ -225,7 +234,7 @@ class CellList extends React.Component {
 							key={i}
 							>
 							<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
-								{(j) => this.renderCell(i, j, cellsMatrix.x, cellsMatrix)}
+								{(j) => this.renderCell(i, j, cellsMatrix.x)}
 							</Repeat>
 						</Row>
 					}
