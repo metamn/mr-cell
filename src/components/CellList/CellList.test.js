@@ -1,6 +1,18 @@
 import React from 'react';
+
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+configure({ adapter: new Adapter() });
+
+import { shallow, mount, render } from 'enzyme';
+
 import CellList from './CellList';
 
-test('two plus two is four', () => {
-  expect(2 + 2).toBe(4);
+describe('CellList', function() {
+	it('should support `em` units', () => {
+		const wrapper = shallow(
+			<CellList width={'10em'} numberOfElements={5} />
+		);
+		expect(wrapper.find('.cell-list').length).toBe(1);
+	});
 });
