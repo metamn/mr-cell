@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Cell from './../Cell';
 import Repeat from './../../framework';
@@ -26,9 +26,19 @@ const Container = styled.div`
 	height: ${props => props.height ? props.height : 'auto'};
 	overflow: hidden;
 	display: flex;
-	flex-wrap: ${props => props.isHorizontal ? 'nowrap' : 'wrap'};
-	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
-	background-color: ${props => props.isHorizontal ? 'lightpink' : props.isVertical ? 'lightyellow' : 'lightblue'};
+	flex-direction: row;
+	flex-wrap: wrap;
+	background-color: lightblue;
+
+	${props => props.isHorizontal && css`
+		flex-wrap: nowrap;
+		background-color: honeydew;
+	`};
+
+	${props => props.isVertical && css`
+		flex-direction: column;
+		background-color: lightyellow;
+	`};
 `;
 
 /**
