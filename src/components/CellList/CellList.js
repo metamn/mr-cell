@@ -29,7 +29,7 @@ const Container = styled.div`
 	display: flex;
 	flex-wrap: ${props => props.isHorizontal ? 'nowrap' : 'wrap'};
 	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
-	background-color: lightblue;
+	background-color: ${props => props.isHorizontal ? 'red' : props.isHorizontal ? 'yellow' : 'lightblue'};
 `;
 
 /**
@@ -53,7 +53,6 @@ class CellList extends React.Component {
 		super(props);
 
 		this.state = {
-			empty: this.isEmpty(),
 			loading: this.isLoading(),
 			cellsMatrix: this.calculateCellsMatrix(),
 		};
@@ -119,16 +118,15 @@ class CellList extends React.Component {
 		return ret;
 	}
 
-	renderCell(i, j, axisWidth) {
-		const cellsMatrix = this.state.cellsMatrix;
+	renderCell(i, j) {
 		const numberOfElements = this.props.numberOfElements;
+		const cellsMatrix = this.state.cellsMatrix;
 
-		const key = (i-1)*axisWidth + j;
-		if (key > numberOfElements + 1) return;
+		const key = (i-1)*cellsMatrix.y + j;
+		if (key > numberOfElements) return;
 
 		const content = `${key}`;
 		const className = `cell cell-${key} cell-column-${i} cell-row-${j}`;
-
 
 		return (
 			<Cell
@@ -156,7 +154,7 @@ class CellList extends React.Component {
 				<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
 					{(i) =>
 						<Repeat key={i} numberOfTimes={cellsMatrix.y} startAt={1}>
-							{(j) => this.renderCell(i, j, cellsMatrix.y)}
+							{(j) => this.renderCell(i, j)}
 						</Repeat>
 					}
 				</Repeat>
@@ -178,12 +176,13 @@ class CellList extends React.Component {
 	}
 
 	render() {
-		const empty = this.state.empty;
-		const loading = this.state.loading;
-		const cellsMatrix = this.state.cellsMatrix;
 		const width = this.props.width;
 		const height = this.props.height;
 		const numberOfElements = this.props.numberOfElements;
+		const cellsMatrix = this.state.cellsMatrix;
+
+		const empty = this.isEmpty();
+		const loading = this.isLoading();
 
 		console.log(`x,y: ${cellsMatrix.x}, ${cellsMatrix.y}`);
 
@@ -200,7 +199,7 @@ class CellList extends React.Component {
 		}
 
 		if (cellsMatrix.isVertical || cellsMatrix.isHorizontal) {
-			return this.renderSingleLineList();
+			return this.renderSingleLineList(cellsMatrix);
 		}
 
 		return (
@@ -218,7 +217,7 @@ class CellList extends React.Component {
 							key={i}
 							>
 							<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
-								{(j) => this.renderCell(i, j, cellsMatrix.x)}
+								{(j) => this.renderCell(i, j, cellsMatrix.x, cellsMatrix)}
 							</Repeat>
 						</Row>
 					}
