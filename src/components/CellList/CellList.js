@@ -28,7 +28,7 @@ const Container = styled.div`
 	display: flex;
 	flex-wrap: ${props => props.isHorizontal ? 'nowrap' : 'wrap'};
 	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
-	background-color: ${props => props.isHorizontal ? 'red' : props.isHorizontal ? 'yellow' : 'lightblue'};
+	background-color: ${props => props.isHorizontal ? 'lightpink' : props.isVertical ? 'lightyellow' : 'lightblue'};
 `;
 
 /**

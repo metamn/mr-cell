@@ -1,31 +1,27 @@
 import React from 'react';
+
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import '@storybook/addon-console';
-import { withKnobs, text, boolean, number } from '@storybook/addon-knobs';
 
 import CellList from './CellList';
 
 const stories = storiesOf('Cell List', module);
 
-stories.addDecorator(withKnobs);
-
 stories.add('empty', () => <CellList width={'10vw'} />);
 stories.add('loading', () => <CellList width={'10vw'} numberOfElements={5} loading={true} />);
 
 stories.add('single line - horizontal', () => {
-	const width = text('Width', '90vw');
-	const numberOfElements = number('numberOfElements', 5);
-
+	const width = '90vw';
+	const numberOfElements = 5;
 	return (
 		<CellList width={width} numberOfElements={numberOfElements} />
 	)
 });
 
 stories.add('single line - vertical', () => {
-	const height = text('Height', '90vh');
-	const numberOfElements = number('numberOfElements', 15);
-
+	const height = '90vh';
+	const numberOfElements = 15;
 	return (
 		<CellList height={height} numberOfElements={numberOfElements} />
 	)
