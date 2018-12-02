@@ -29,6 +29,7 @@ const Container = styled.div`
 	display: flex;
 	flex-wrap: ${props => props.isHorizontal ? 'nowrap' : 'wrap'};
 	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
+	background-color: lightblue;
 `;
 
 /**
@@ -123,7 +124,7 @@ class CellList extends React.Component {
 		const numberOfElements = this.props.numberOfElements;
 
 		const key = (i-1)*axisWidth + j;
-		if (key > numberOfElements) return;
+		if (key > numberOfElements + 1) return;
 
 		const content = `${key}`;
 		const className = `cell cell-${key} cell-column-${i} cell-row-${j}`;
@@ -146,7 +147,7 @@ class CellList extends React.Component {
 
 		return (
 			<Container
-				className='cell-list'
+				className='cell-list single-line'
 				width={width}
 				height={height}
 				isVertical={cellsMatrix.isVertical}
@@ -182,6 +183,7 @@ class CellList extends React.Component {
 		const cellsMatrix = this.state.cellsMatrix;
 		const width = this.props.width;
 		const height = this.props.height;
+		const numberOfElements = this.props.numberOfElements;
 
 		console.log(`x,y: ${cellsMatrix.x}, ${cellsMatrix.y}`);
 
