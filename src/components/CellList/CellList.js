@@ -122,15 +122,17 @@ class CellList extends React.Component {
 		const numberOfElements = this.props.numberOfElements;
 
 		const key = (i-1)*axisWidth + j;
-		let className = `cell cell-${key} cell-column-${i} cell-row-${j}`;
-
 		if (key > numberOfElements) return;
+
+		const content = `${key}`;
+		const className = `cell cell-${key} cell-column-${i} cell-row-${j}`;
+
 
 		return (
 			<Cell
 				key={key}
 				className={className}
-				content={key}
+				content={content}
 			>
 			</Cell>
 		)
@@ -151,7 +153,7 @@ class CellList extends React.Component {
 				>
 				<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
 					{(i) =>
-						<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
+						<Repeat key={i} numberOfTimes={cellsMatrix.y} startAt={1}>
 							{(j) => this.renderCell(i, j, cellsMatrix.y)}
 						</Repeat>
 					}

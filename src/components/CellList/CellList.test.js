@@ -1,18 +1,16 @@
 import React from 'react';
 
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-configure({ adapter: new Adapter() });
-
-import { shallow, mount, render } from 'enzyme';
+import styled from 'styled-components'
+import renderer from 'react-test-renderer'
+import 'jest-styled-components'
 
 import CellList from './CellList';
 
 describe('CellList', function() {
 	it('should support `em` units', () => {
-		const wrapper = shallow(
+		const wrapper = renderer.create(
 			<CellList width={'10em'} numberOfElements={5} />
-		);
-		expect(wrapper.find('.cell-list').length).toBe(1);
+		).toJSON();
+		expect(wrapper).toHaveStyleRule('width', '10em');
 	});
 });
