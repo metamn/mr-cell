@@ -100,8 +100,8 @@ export default class CellList extends React.Component {
 				} else {
 					// Rectangle
 					const min = Math.min(w, h);
-					const larger = Math.round(numberOfElements / min * 10);
-					const smaller = Math.round(min / 10);
+					const smaller = Math.round(numberOfElements / min);
+					const larger = Math.ceil(numberOfElements / smaller);
 
 					ret.x = (w > h) ? larger : smaller;
 					ret.y = (w > h) ? smaller : larger;
@@ -109,14 +109,20 @@ export default class CellList extends React.Component {
 			}
 		}
 
+		if (ret.x == 1) ret.isVertical = true;
+		if (ret.y == 1) ret.isHorizontal = true;
+
 		return ret;
 	}
 
 	renderCell(i, j, axisWidth) {
 		const cellsMatrix = this.state.cellsMatrix;
+		const numberOfElements = this.props.numberOfElements;
 
 		const key = (i-1)*axisWidth + j;
 		let className = `cell cell-${key} cell-column-${i} cell-row-${j}`;
+
+		if (key > numberOfElements) return;
 
 		return (
 			<Cell
