@@ -25,7 +25,8 @@ const Container = styled.div`
 	width: ${props => props.width ? props.width : 'auto'};
 	height: ${props => props.height ? props.height : 'auto'};
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: ${props => props.isHorizontal ? 'nowrap' : 'wrap'};
+	flex-direction: ${props => props.isVertical ? 'column' : 'row'};
 `;
 
 /**
@@ -63,10 +64,12 @@ export default class CellList extends React.Component {
 			x: 1,
 			y: 1,
 			isVertical: false,
+			isHorizontal: false,
 		};
 
 		if (width && !height) {
 			ret.x = numberOfElements;
+			ret.isHorizontal = true
 		}
 
 		if (height && !width) {
@@ -125,6 +128,31 @@ export default class CellList extends React.Component {
 		)
 	}
 
+	renderSingleLineList() {
+		const width = this.props.width;
+		const height = this.props.height;
+		const cellsMatrix = this.state.cellsMatrix;
+
+		return (
+			<Container
+				className='cell-list'
+				width={width}
+				height={height}
+				isVertical={cellsMatrix.isVertical}
+				isHorizontal={cellsMatrix.isHorizontal}
+				>
+				<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
+					{(i) =>
+						<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
+							{(j) => this.renderCell(i, j)}
+						</Repeat>
+					}
+				</Repeat>
+			</Container>
+		)
+	}
+
+
 	render() {
 		const empty = this.state.empty;
 		const loading = this.state.loading;
@@ -146,19 +174,22 @@ export default class CellList extends React.Component {
 			)
 		}
 
+		if (cellsMatrix.isVertical || cellsMatrix.isHorizontal) {
+			return this.renderSingleLineList();
+		}
+
 		return (
 			<Container
+				className='cell-list'
 				width={width}
 				height={height}
-				isVertical={cellsMatrix.isVertical}
 				>
 				<Repeat numberOfTimes={cellsMatrix.x} startAt={1}>
 					{(i) =>
 						<Row
 							height={height}
 							rows={cellsMatrix.y}
-							isVertical={cellsMatrix.isVertical}
-							className="row row-${i}"
+							className='row'
 							key={i}
 							>
 							<Repeat numberOfTimes={cellsMatrix.y} startAt={1}>
