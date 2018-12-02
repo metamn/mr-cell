@@ -1,7 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-
 /**
  * Imitates the for loop inside JSX
  * - https://reactjs.org/docs/jsx-in-depth.html

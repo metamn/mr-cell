@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -89,17 +88,17 @@ class CellList extends React.Component {
 			const h = height.replace(/[^0-9.]/g, '');
 
 			// Square
-			if (w == h) {
+			if (w === h) {
 				ret.x = ret.y = Math.round(Math.sqrt(numberOfElements));
 			} else {
 				const max = Math.max(w, h);
 
 				// Single line
 				if (max >= numberOfElements) {
-					ret.x = (max == w) ? numberOfElements : 1;
-					ret.y = (max == h) ? numberOfElements : 1;
-					ret.isHorizontal = (max == w);
-					ret.isVertical = (max == h);
+					ret.x = (max === w) ? numberOfElements : 1;
+					ret.y = (max === h) ? numberOfElements : 1;
+					ret.isHorizontal = (max === w);
+					ret.isVertical = (max === h);
 				} else {
 					// Rectangle
 					const min = Math.min(w, h);
@@ -112,8 +111,8 @@ class CellList extends React.Component {
 			}
 		}
 
-		if (ret.x == 1) ret.isVertical = true;
-		if (ret.y == 1) ret.isHorizontal = true;
+		if (ret.x === 1) ret.isVertical = true;
+		if (ret.y === 1) ret.isHorizontal = true;
 
 		return ret;
 	}
@@ -178,7 +177,6 @@ class CellList extends React.Component {
 	render() {
 		const width = this.props.width;
 		const height = this.props.height;
-		const numberOfElements = this.props.numberOfElements;
 		const cellsMatrix = this.state.cellsMatrix;
 
 		const empty = this.isEmpty();
