@@ -206,7 +206,7 @@ export default class CellList extends React.Component {
 					{(i) =>
 						<Row
 							height={height}
-							rows={cellsMatrix.x}
+							rows={cellsMatrix.y}
 							className='row'
 							key={i}
 							>
