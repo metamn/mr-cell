@@ -69,26 +69,41 @@ export default class CellList extends React.Component {
 
 		if (width && !height) {
 			ret.x = numberOfElements;
-			ret.isHorizontal = true
 		}
 
 		if (height && !width) {
 			ret.y = numberOfElements;
-			ret.isVertical = true;
 		}
 
 		if (height && width) {
 			const w = width.replace(/[^0-9.]/g, '');
 			const h = height.replace(/[^0-9.]/g, '');
 
+			console.log(`w,h: ${w}, ${h}`);
+
 			if (w > h) {
-				ret.x = Math.round(numberOfElements / h);
-				ret.y = h;
+				let round = Math.round(numberOfElements / h);
+
+				if (round) {
+					ret.x = round;
+					ret.y = h;
+				} else {
+					ret.x = numberOfElements;
+					ret.y = 1;
+				}
+
 			}
 
 			if (w < h) {
-				ret.x = w;
-				ret.y = Math.round(numberOfElements / w);
+				let round = Math.round(numberOfElements / w);
+
+				if (round) {
+					ret.x = w;
+					ret.y = round;
+				} else {
+					ret.x = 1;
+					ret.y = numberOfElements;
+				}
 			}
 
 			if (w == h) {
@@ -96,20 +111,10 @@ export default class CellList extends React.Component {
 			}
 		}
 
+		if (ret.x == 1) ret.isVertical = true;
+		if (ret.y == 1) ret.isHorizontal = true;
+
 		return ret;
-	}
-
-	isLoading() {
-		return this.props.loading;
-	}
-
-	isEmpty() {
-		const numberOfElements = this.props.numberOfElements
-		const width = this.props.width;
-		const height = this.props.height;
-
-		if (!numberOfElements) return true;
-		if (!width && !height) return true;
 	}
 
 	renderCell(i, j) {
@@ -152,6 +157,18 @@ export default class CellList extends React.Component {
 		)
 	}
 
+	isLoading() {
+		return this.props.loading;
+	}
+
+	isEmpty() {
+		const numberOfElements = this.props.numberOfElements
+		const width = this.props.width;
+		const height = this.props.height;
+
+		if (!numberOfElements) return true;
+		if (!width && !height) return true;
+	}
 
 	render() {
 		const empty = this.state.empty;
